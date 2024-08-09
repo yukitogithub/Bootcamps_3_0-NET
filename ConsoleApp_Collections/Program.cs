@@ -1,4 +1,6 @@
-﻿////Colecciones
+﻿//usings
+
+////Colecciones
 //Arreglos
 #region Arreglos
 //Definicion de Arreglos
@@ -198,3 +200,6 @@ foreach (var item in nombre)
 }
 
 //String es una colección? Sí o no? y por qué?
+
+//namespaces
+//clases, interfaces, etc

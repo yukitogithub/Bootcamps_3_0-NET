@@ -58,6 +58,9 @@
             Console.WriteLine("  ");
             Console.ReadLine();
             Console.WriteLine("Subiendo conductor al auto (El método subir conductor al auto 'setea' el valor del teléfono del conductor, en este caso persona1)");
+            //Inyección de Dependencia por Propiedad
+            auto1.Conductor = persona1; 
+            //Inyección de Dependencia por Método
             auto1.SubirConductor(persona1); //Metodo para subir conductor setea telefono en conductor
             Console.WriteLine("  ");
             Console.ReadLine();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Clase6_Ejemplos_POO_Parte1
+namespace Clase8_ClassLibrary
 {
     public class Auto
     {

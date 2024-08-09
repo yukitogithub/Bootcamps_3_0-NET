@@ -7,8 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleApp_Clase4_Ejemplos\ConsoleApp_Clase4_Ejemplos.csproj" />
-  </ItemGroup>
-
 </Project>
