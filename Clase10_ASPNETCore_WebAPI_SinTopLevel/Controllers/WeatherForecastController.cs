@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using WebApplication_ASPNETCore_API.Models;
 
-namespace WebApplication_ASPNETCore_API.Controllers
+namespace Clase10_ASPNETCore_WebAPI_SinTopLevel.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

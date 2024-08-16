@@ -1,4 +1,4 @@
-namespace WebApplication_ASPNETCore_API
+namespace Clase10_ASPNETCore_WebAPI_SinTopLevel
 {
     public class WeatherForecast
     {

@@ -1,0 +1,6 @@
+@Clase10_ASPNETCore_WebAPI_SinTopLevel_HostAddress = http://localhost:5027
+
+GET {{Clase10_ASPNETCore_WebAPI_SinTopLevel_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
