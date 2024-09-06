@@ -15,10 +15,13 @@ namespace FinalApp_ECommerce_BusinessLayer.Services
     {
         private readonly ECommerceDbContext _context;
         private readonly IProductService _productService;
-        public OrderService(ECommerceDbContext context, IProductService productService)
+        private readonly ICurrentUserService _currentUserService;
+
+        public OrderService(ECommerceDbContext context, IProductService productService, ICurrentUserService currentUserService)
         {
             _context = context;
             _productService = productService;
+            _currentUserService = currentUserService;
         }
 
         public async Task<bool> PlaceOrder(OrderDto orderDto)
@@ -90,6 +93,18 @@ namespace FinalApp_ECommerce_BusinessLayer.Services
             var orders = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderItems).ThenInclude(oi => oi.Product).ThenInclude(p => p.Category)
+                .ToListAsync();
+
+            return orders;
+        }
+
+        public async Task<IEnumerable<Order>> GetMyOrders()
+        {
+            var userId = _currentUserService.UserId;
+
+            var orders = await _context.Orders.Where(o => o.UserId == userId)
+                .Include(o => o.OrderItems).ThenInclude(oi => oi.Product).ThenInclude(p => p.Category)
+                .Include(o => o.User)
                 .ToListAsync();
 
             return orders;

@@ -23,12 +23,16 @@ namespace FinalApp_ECommerce_DataAccessLayer.Repositories
 
         public async Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
         {
-            return await _context.Products.Where(
-                p => 
+            var list = await _context.Products.ToListAsync();
+
+            var filteredList = list.Where(
+                p =>
                     p.Name.Contains(searchTerm ?? "", StringComparison.OrdinalIgnoreCase)
                     ||
                     (p.Description != null && p.Description.Contains(searchTerm ?? "", StringComparison.OrdinalIgnoreCase))
-                ).ToListAsync();
+                );
+
+            return filteredList;
         }
     }
 }

@@ -2,12 +2,14 @@
 using FinalApp_ECommerce_BusinessLayer.Interfaces;
 using FinalApp_ECommerce_DataAccessLayer.Models;
 using FinalApp_ECommerce_WebAPI.Infrastructure.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalApp_ECommerce_WebAPI.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase

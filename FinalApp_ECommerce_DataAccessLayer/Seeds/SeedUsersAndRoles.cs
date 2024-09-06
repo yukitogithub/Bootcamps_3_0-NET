@@ -38,8 +38,15 @@ namespace FinalApp_ECommerce_DataAccessLayer.Seeds
                         Name = "admin"
                     };
 
-                    await userManager.CreateAsync(user, "adminadmin");
-                    await userManager.AddToRoleAsync(user, "ADMIN");
+                    var result = await userManager.CreateAsync(user, "adminadmin");
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, "ADMIN");
+                    }
+                    else
+                    { 
+                    //Error
+                    }
                 }
             }
         }

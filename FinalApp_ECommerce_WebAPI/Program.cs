@@ -5,6 +5,7 @@ using FinalApp_ECommerce_DataAccessLayer.Interfaces;
 using FinalApp_ECommerce_DataAccessLayer.Models;
 using FinalApp_ECommerce_DataAccessLayer.Repositories;
 using FinalApp_ECommerce_DataAccessLayer.Seeds;
+using FinalApp_ECommerce_WebAPI.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,8 @@ builder.Services.AddIdentityCore<User>(
         options.User.RequireUniqueEmail = true;
         options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireDigit = false;
         options.SignIn.RequireConfirmedEmail = false;
     }
     )
@@ -102,6 +105,7 @@ Casos de Uso: Servicios que dependen de otros servicios o que requieren iniciali
 //Si un servicio se comunica con otro, el servicio que depende de otro debe registrarse después del servicio en el que depende.
 //Ejemplo: ProductService depende de IProductRepository, por lo que IProductRepository debe registrarse antes que ProductService.
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
@@ -110,7 +114,38 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    setup =>
+    {
+        setup.SwaggerDoc("v1", new OpenApiInfo { Title = "ECommerceApp", Version = "v1" });
+        setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            Description = "Input your bearer token in this format - Bearer {your token} to access this API"
+        });
+        setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme = "Bearer",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header
+                },
+                new string[] {}
+            }
+        });
+    }    
+);
 
 //JWT Configuration. AddAuthentication and AddJwtBearer
 //AddAuthentication: Configura la autenticación para la aplicación. Esto incluye la configuración de esquemas de autenticación, como cookies, tokens JWT y otros esquemas personalizados.
@@ -152,6 +187,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//CORS
+app.UseCors(
+    x => x
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    //.WithOrigins("https://mybeautifullpage.com")
+    .AllowAnyOrigin()
+    //.SetIsOriginAllowed(origin => true)
+);
 
 app.UseHttpsRedirection();
 
