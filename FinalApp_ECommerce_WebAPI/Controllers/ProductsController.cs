@@ -22,7 +22,8 @@ namespace FinalApp_ECommerce_WebAPI.Controllers
 
         // GET: api/Products
         [HttpGet]
-        [Route("/page/{pageNumber}/size/{pageSize}")]
+        [Authorize]
+        [Route("page/{pageNumber}/size/{pageSize}")]
         public async Task<IActionResult> Get([FromQuery] string? searchTerm, [FromQuery] string? sortBy, [FromQuery] string? sortOrder, int pageNumber = 1, int pageSize = 10)
         {
             var products = await _productService.GetAllProductsAsync(searchTerm, sortBy, sortOrder, pageNumber, pageSize);
@@ -31,6 +32,7 @@ namespace FinalApp_ECommerce_WebAPI.Controllers
         }
 
         // GET: api/Products/5
+        [Authorize]
         [HttpGet("{id}", Name = "GetProduct")]
         public async Task<IActionResult> GetProduct(int id)
         {
