@@ -44,11 +44,14 @@ namespace FinalApp_ECommerce_WebAPI.Controllers
             //If password is not correct, return unauthorized
             if (!result.Succeeded) return Unauthorized("Invalid email or password");
 
+            var roles = await _userManager.GetRolesAsync(user);
+
             //Return user
             return Ok(new UserDto
             {
                 Id = user.Id,
                 Email = user.Email,
+                Roles = roles.ToList(),
                 Token = await _tokenService.GenerateToken(user) //Generate token
             });
         }
